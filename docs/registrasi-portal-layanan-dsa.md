@@ -1,93 +1,48 @@
-# Registrasi Portal Layanan DSA
+# Proses Registrasi pada Portal Layanan Digital Signature Aggregator (DSA)
 
-> Sumber: `Registrasi Portal Layanan DSA.pptx`  
-> Jumlah slide: 15
+> Sumber: `Registrasi Portal Layanan DSA.pptx` (15 slide)
 
-## Slide 1 — Proses Registrasi pada Portal
+## 1. Registrasi Organisasi
 
-- Digital Signature Aggregator
+Untuk dapat melakukan proses **sign** dan **stamp**, pengguna harus mendaftarkan akunnya terlebih dahulu melalui halaman registrasi.
 
-- Proses Registrasi pada Portal
-- Layanan Digital Signature Aggregator
+1. **Akses halaman register** pada Portal Layanan DSA.
+2. **Daftarkan organisasi** terlebih dahulu dengan mengisi data organisasi pada form registrasi.
+3. Setelah organisasi berhasil didaftarkan, pengguna diarahkan untuk **mendaftarkan akun pribadinya**.
 
-## Slide 2 — Halaman Registrasi Organisasi
+## 2. Registrasi Akun
 
-- Halaman Registrasi Organisasi
+1. Isi data akun pribadi pada form registrasi.
+2. Khusus **Warga Negara Asing (WNA)**: pilih opsi **WNA**, lalu input nomor **Kartu Izin Tinggal/Passport**.
+3. Setelah organisasi dan akun berhasil didaftarkan, pengguna akan menerima **pesan sukses**.
 
-- Tampilan halaman registrasi untuk dapat melakukan proses sign dan stamp, pengguna diarahkan untuk mendaftarkan akunnya terlebih dahulu, pengguna dapat mengakses halaman register seperti berikut.
+## 3. Pengaturan Password Awal
 
-## Slide 3 — Halaman Registrasi Organisasi
+1. Pengguna menerima **email** untuk mengatur password yang akan digunakan saat login ke DSA.
+2. Klik link **Atur Password Sekarang** pada email tersebut, lalu atur password sesuai keinginan.
 
-- Halaman Registrasi Organisasi
+## 4. Login
 
-- Tampilan halaman ketika sudah menampilkan halaman register, pengguna akan mendaftarkan organisasinya terlebih dahulu seperti berikut.
+Setelah registrasi berhasil, pengguna diarahkan ke halaman **Login** untuk mengisi **email** dan **kata sandi** sesuai data yang digunakan saat registrasi.
 
-## Slide 4 — Halaman Registrasi Organisasi
+## 5. Forgot Password (Lupa Kata Sandi)
 
-- Halaman Registrasi Organisasi
+Jika pengguna lupa kata sandinya, tersedia fitur **Forgot Password** pada halaman login:
 
-- Ketika sudah berhasil mendaftarkan Organisasi, Pengguna akan diarahkan untuk mendaftarkan akunnya pada halaman seperti berikut.
+1. **Input email** yang akan direset password-nya. Pengguna akan menerima email berisi link untuk melanjutkan proses reset password.
+2. Buka link reset password, lalu input **New Password** dan **Confirm New Password** pada halaman Reset Password.
+3. Setelah password baru tersimpan, pengguna akan menerima **pesan konfirmasi** bahwa perubahan password berhasil, dan dapat login kembali.
 
-## Slide 5 — Halaman Registrasi Akun
+## 6. Halaman Portal DSA (Dashboard)
 
-- Halaman Registrasi Akun
+Setelah berhasil login, pengguna masuk ke halaman **Dashboard** — halaman utama yang menampilkan informasi:
 
-- Kemudian jikalau pengguna yang akan mendaftarkan diri tersebut kewarganegaraan asing, maka pengguna diarahkan untuk memilih WNA dan menginputkan nomor Kartu Izin Tinggal/Passport, sebagai berikut.
+- Main Transaction
+- Mutasi Saldo
+- Total Transaction pada DSA
+- Registrasi
+- E-Materai
 
-## Slide 6 — Halaman Registrasi Akun
+---
 
-- Halaman Registrasi Akun
-
-- Ketika sudah berhasil mendaftarkan Organisasi dan Akun pribadinya, Pengguna akan mendapat informasi pesan sukses seperti berikut.
-
-## Slide 7 — Halaman Reset Password Akun
-
-- Halaman Reset Password Akun
-
-- Kemudian Pengguna akan mendapat pesan melalui email seperti berikut dengan tujuan untuk mengatur password yang akan digunakan untuk proses login pada Digital Signature Aggregator.
-
-## Slide 8 — Halaman Reset Password
-
-- Halaman Reset Password
-
-- Kemudian Pengguna akan memilih link Atur Password Sekarang, untuk mengatur password yang digunakan untuk masuk pada halaman Digital Signature Aggregator.
-
-## Slide 9 — Halaman Login
-
-- Halaman Login
-
-- Setelah proses registrasi berhasil, pengguna akan diarahkan ke halaman login untuk mengisi email dan kata sandi sesuai dengan data yang digunakan saat registrasi.
-
-## Slide 10 — Halaman Forgot Password
-
-- Halaman Forgot Password
-
-- Pada halaman login, pengguna juga dapat menggunakan fitur forgot password untuk memudahkan proses Login apabila pengguna lupa kata sandinya.
-
-## Slide 11 — Halaman Forgot Password
-
-- Halaman Forgot Password
-
-- Pengguna diminta untuk menginputkan email yang akan dilakukan proses reset password, kemudian pengguna akan mendapatkan pesan melalui email untuk kelanjutan proses reset password.
-
-## Slide 12 — Halaman Forgot Password
-
-- Halaman Forgot Password
-
-- Setelah diarahkan ke link reset password, pengguna dapat menginputkan New Password dan Confirm New Password di halaman Reset Password dapat Login kembali, seperti berikut:
-
-## Slide 13 — Halaman Forgot Password
-
-- Halaman Forgot Password
-
-- Ketika pengguna sudah menginputkan password baru, pengguna akan mendapatkan pesan bahwa perubahan password sudah berhasil dilakukan.
-
-## Slide 14 — Halaman Portal DSA
-
-- Halaman Portal DSA
-
-- Halaman Dashboard merupakan halaman utama yang menampilkan informasi mengenai Main Transaction, Mutasi Saldo, Total Transaction pada DSA, Registrasi dan E-Materai setelah user berhasil login, seperti pada gambar berikut.
-
-## Slide 15 — TERIMA KASIH
-
-- TERIMA KASIH
+*TERIMA KASIH*

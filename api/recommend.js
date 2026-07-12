@@ -1,8 +1,9 @@
 import { OpenAI } from 'openai';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { findDecision } from './decisionTree.js';
+import { loadMetricsSnapshot } from '../functions/metrics.js';
+import { buildFeatureArray, VALID_JENIS_SIGNER, PROVIDERS } from '../functions/features.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -10,84 +11,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const VALID_JENIS_SIGNER = ['Sign', 'Sign + E-Materai'];
-const PROVIDERS = ['Peruri', 'Privy', 'Vinotek', 'Xignature'];
-
-// Capability matrix -- idealnya di-generate ulang dari sheet 'harga' tiap
-// retrain. Untuk sekarang semua provider mendukung kedua jenis_signer.
-const CAPABILITY_MAP = {
-  Peruri: { supportsSignOnly: true, supportsSignEmaterai: true },
-  Privy: { supportsSignOnly: true, supportsSignEmaterai: true },
-  Vinotek: { supportsSignOnly: true, supportsSignEmaterai: true },
-  Xignature: { supportsSignOnly: true, supportsSignEmaterai: true },
-};
-
-const SENTINEL_SUCCESS_RATE = 0.0;
-const SENTINEL_SLA_MS = 999999.0;
-
-// Snapshot metrik terkini -- di-refresh manual tiap retrain, gantikan
-// file ini dengan hasil export terbaru dari cleansing_pipeline.py (Colab)
 const SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'provider_metrics_snapshot.csv');
-
-let _snapshotCache = null;
-
-/**
- * Baca & parse provider_metrics_snapshot.csv (format sederhana, 4 baris,
- * kolom: provider,periode,success_rate,avg_sla_ms). Di-cache di memori
- * supaya tidak baca file berulang tiap request.
- */
-function loadMetricsSnapshot() {
-  if (_snapshotCache) return _snapshotCache;
-
-  const csvContent = fs.readFileSync(SNAPSHOT_PATH, 'utf-8');
-  const [headerLine, ...rows] = csvContent.trim().split('\n');
-  const headers = headerLine.split(',');
-
-  const snapshot = {};
-  for (const row of rows) {
-    const values = row.split(',');
-    const record = Object.fromEntries(headers.map((h, i) => [h, values[i]]));
-    snapshot[record.provider] = {
-      successRate: parseFloat(record.success_rate),
-      avgSlaMs: parseFloat(record.avg_sla_ms),
-    };
-  }
-
-  _snapshotCache = snapshot;
-  return snapshot;
-}
-
-/**
- * Mengubah payload {jenis_signer, provider_terdaftar} + snapshot metrik
- * jadi array fitur urutan tetap, PERSIS sesuai urutan saat training:
- * [jenis_signer, registered_Peruri, success_rate_Peruri, avg_sla_ms_Peruri,
- *  registered_Privy, success_rate_Privy, avg_sla_ms_Privy,
- *  registered_Vinotek, success_rate_Vinotek, avg_sla_ms_Vinotek,
- *  registered_Xignature, success_rate_Xignature, avg_sla_ms_Xignature]
- */
-function buildFeatureArray(jenisSigner, providerTerdaftar, metricsSnapshot) {
-  const featureArray = [jenisSigner];
-  const metricsUsed = {};
-
-  for (const provider of PROVIDERS) {
-    const isRegistered = providerTerdaftar.includes(provider);
-    const capability = CAPABILITY_MAP[provider];
-    const supports = jenisSigner === 'Sign'
-      ? capability.supportsSignOnly
-      : capability.supportsSignEmaterai;
-
-    const metric = metricsSnapshot[provider];
-    const eligible = isRegistered && supports && metric != null;
-
-    const successRate = eligible ? metric.successRate : SENTINEL_SUCCESS_RATE;
-    const avgSlaMs = eligible ? metric.avgSlaMs : SENTINEL_SLA_MS;
-
-    featureArray.push(isRegistered ? 1 : 0, successRate, avgSlaMs);
-    metricsUsed[provider] = { registered: isRegistered, success_rate: successRate, avg_sla_ms: avgSlaMs };
-  }
-
-  return { featureArray, metricsUsed };
-}
 
 async function generateReasoning(recommendedProvider, jenisSigner, metricsUsed) {
   const metricsSummary = Object.entries(metricsUsed)
@@ -157,7 +81,7 @@ export default async function handler(req, res) {
     }
 
     // 1. Bangun fitur & jalankan decision tree (murni JS, tanpa service lain)
-    const metricsSnapshot = loadMetricsSnapshot();
+    const metricsSnapshot = loadMetricsSnapshot(SNAPSHOT_PATH);
     const { featureArray, metricsUsed } = buildFeatureArray(jenisSigner, providerTerdaftar, metricsSnapshot);
     const recommendedProvider = findDecision(featureArray);
 
