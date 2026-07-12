@@ -1,220 +1,183 @@
-# Manual Book Layanan Digital Signature Aggregator (DSA) V.1.3 (User)
+# Manual Book Layanan Digital Signature Aggregator (DSA) — V.1.3 (User)
 
-## Daftar Isi
+> Sumber: `Manual Book Layanan DSA V.1.3 (User)`
 
-- Riwayat Dokumen
-- System Architecture
-- System Functionality
-- Halaman Registrasi Organisasi
-- Halaman Login
-- Forgot Password
-- Halaman Profile
-- Halaman Change Password
-- Halaman Logout
-- Halaman Inbox
-- Halaman List Dokumen
-- Halaman History Saldo
-- Halaman History Transaksi
+## 1. Registrasi
 
-## Riwayat Dokumen
+### 1.1 Registrasi Organisasi
 
-| Versi | Deskripsi | Tanggal | Penulis |
-|---|---|---|---|
-| 1.0 | Manual Book Digital Signature Aggregator V.1 | 01 Juli 2025 | Via Rahmadani |
-| 1.1 | Update Manual Book Signature Aggregator | 04 Juli 2025 | Via Rahmadani |
-| 1.2 | Menambahkan Manual Book Menu pengguna dan History Dokumen | 16 Juli 2025 | Via Rahmadani |
-| 1.3 | Memperbaharui Dokumen | 28 Agustus 2025 | Dhea Mahdavikia |
+Untuk dapat melakukan proses **sign** dan **stamp**, pengguna harus mendaftarkan akunnya terlebih dahulu melalui halaman register.
 
-## System Architecture
+1. Akses halaman **register**.
+2. Daftarkan **organisasi** terlebih dahulu.
+3. Setelah organisasi berhasil didaftarkan, pengguna diarahkan untuk mendaftarkan **akun pribadinya**.
+4. Khusus **Warga Negara Asing (WNA)**: pilih opsi **WNA**, lalu input nomor **Kartu Izin Tinggal/Passport**.
+5. Setelah organisasi dan akun berhasil didaftarkan, pengguna menerima **pesan sukses**.
 
-Berikut ini adalah arsitektur sistem yang digunakan pada Digital Signature Aggregator.
+### 1.2 Pengaturan Password Awal
 
-## System Functionality
+1. Pengguna menerima **email** untuk mengatur password yang akan digunakan saat login ke DSA.
+2. Klik link **Atur Password Sekarang** pada email tersebut, lalu atur password.
 
-Berikut merupakan fungsional sistem pada Digital Signature Aggregator.
+> **Catatan:** Tautan atur password bersifat **satu kali pakai (one-time use)** dan berlaku selama **24 jam**. Jika melebihi batas waktu atau sudah digunakan, pengguna harus meminta tautan baru melalui fitur *forgot password* pada halaman login.
 
-## Halaman Registrasi Organisasi
+## 2. Login
 
-Untuk dapat melakukan proses sign dan stamp, pengguna diarahkan untuk mendaftarkan akunnya terlebih dahulu. Pengguna dapat mengakses halaman register.
+Setelah registrasi berhasil, pengguna diarahkan ke halaman **Login** untuk mengisi **email** dan **kata sandi** sesuai data yang digunakan saat registrasi.
 
-Ketika sudah menampilkan halaman register, pengguna akan mendaftarkan organisasinya terlebih dahulu.
+## 3. Forgot Password (Lupa Kata Sandi)
 
-Ketika sudah berhasil mendaftarkan organisasi, pengguna akan diarahkan untuk mendaftarkan akunnya.
+Jika pengguna lupa kata sandinya, tersedia fitur **Forgot Password** pada halaman login:
 
-Jika pengguna yang akan mendaftarkan diri merupakan warga negara asing, pengguna diarahkan untuk memilih WNA dan menginputkan nomor Kartu Izin Tinggal/Passport.
+1. Input **email** yang akan direset password-nya. Pengguna akan menerima email untuk melanjutkan proses reset password.
+2. Buka link reset password, lalu input **New Password** dan **Confirm New Password** pada halaman Reset Password.
+3. Setelah password baru tersimpan, pengguna menerima **pesan konfirmasi** bahwa perubahan password berhasil, dan dapat login kembali.
 
-Ketika sudah berhasil mendaftarkan organisasi dan akun pribadinya, pengguna akan mendapat informasi pesan sukses.
+## 4. Halaman Profile
 
-Pengguna akan mendapat pesan melalui email dengan tujuan untuk mengatur password yang akan digunakan untuk proses login pada Digital Signature Aggregator.
+Halaman profil berfungsi untuk mengidentifikasi akun dan berisi informasi pribadi. Menu profile terdiri dari beberapa halaman berikut.
 
-Pengguna memilih link **Atur Password Sekarang** untuk mengatur password yang digunakan untuk masuk pada halaman Digital Signature Aggregator.
+### 4.1 Account Information
 
-Tautan atur password tersebut hanya bersifat satu kali pakai (one-time use) dan berlaku selama 24 jam. Jika melebihi batas waktu atau sudah digunakan, pengguna harus meminta tautan baru melalui fitur forgot password pada halaman login.
+Pengguna dapat memonitor informasi pribadi berdasarkan data yang diinput saat registrasi.
 
-## Halaman Login
+1. Jika ada data yang tidak sesuai, klik tombol **Change**.
+2. Lakukan perubahan data sesuai kebutuhan, lalu klik **Save Change**.
 
-Setelah proses registrasi berhasil, pengguna akan diarahkan ke halaman login untuk mengisi email dan kata sandi sesuai dengan data yang digunakan saat registrasi.
+### 4.2 Signature
 
-## Forgot Password
+Halaman Signature memudahkan pengguna mengelola daftar tanda tangan digital untuk proses transaksi. Pengguna dapat melakukan **View**, **Download**, dan **Delete** pada tanda tangan yang terdaftar.
 
-Pada halaman login, pengguna juga dapat menggunakan fitur **forgot password** untuk memudahkan proses login apabila pengguna lupa kata sandinya.
+1. Klik **Add Signature** untuk menambahkan tanda tangan. Tersedia 3 cara: **gambar**, **ketik**, dan **unggah**.
+2. Setelah selesai membuat atau mengunggah tanda tangan, klik tombol **Buat**.
 
-Pengguna diminta untuk menginputkan email yang akan dilakukan proses reset password, kemudian pengguna akan mendapatkan pesan melalui email untuk kelanjutan proses reset password.
+### 4.3 Provider
 
-Setelah diarahkan ke link reset password, pengguna dapat menginputkan **New Password** dan **Confirm New Password** di halaman Reset Password agar dapat login kembali.
+Proses **Add Provider** adalah proses utama setelah registrasi selesai, untuk mempermudah proses transaksi.
 
-Ketika pengguna sudah menginputkan password baru, pengguna akan mendapatkan pesan bahwa perubahan password sudah berhasil dilakukan.
+**Menambahkan provider:**
 
-## Halaman Profile
+1. Pada halaman Provider, pilih **Add Provider** untuk penyesuaian provider dan organisasi.
+2. Setelah penyesuaian selesai, klik tombol **Add Provider**.
+3. Setelah provider berhasil ditambahkan, pengguna menerima **email undangan** untuk melanjutkan proses aktivasi akun.
 
-Halaman profil merupakan halaman yang berfungsi untuk mengidentifikasi akun yang berisi informasi pribadi. Berikut adalah halaman yang terdapat pada menu profile Digital Signature Aggregator.
+**Aktivasi akun:**
 
-### Account Information
+1. **Syarat dan Ketentuan** — centang persetujuan di bagian bawah halaman aktivasi, lalu klik **Selanjutnya**.
+2. **Pengisian Data Diri**:
+   - Unggah KTP melalui tombol **Upload Foto KTP**.
+   - Input data diri sesuai KTP yang telah diunggah.
+   - Jika data sudah sesuai, klik **Selanjutnya**.
+3. **Swafoto**:
+   - Klik **Nyalakan Kamera**, arahkan kamera ke wajah, lalu klik **Ambil Kamera**.
+   - Ketentuan swafoto:
+     - Posisikan wajah di tengah.
+     - Tidak memakai topi, masker, atau aksesoris yang menghalangi wajah.
+     - Pastikan pencahayaan cukup.
+   - Setelah swafoto berhasil diambil, unggah dengan memilih tombol **Ambil Foto**.
 
-Pada halaman Account Information, pengguna dapat memonitoring informasi pribadi berdasarkan data yang diinputkan pada saat proses registrasi. Jika ada data yang tidak sesuai, pengguna dapat mengubah data tersebut dengan cara memilih button **Change**.
+**Penerbitan sertifikat digital:**
 
-Pengguna dapat melakukan perubahan data sesuai kebutuhan. Jika sudah melakukan perubahan, pengguna dapat menekan button **Save Change**.
+Unggahan swafoto merupakan langkah terakhir aktivasi. Selanjutnya:
 
-### Signature
+1. Klik **Lihat Sertifikat** untuk melihat Sertifikat Digital Akun.
+2. Periksa data pada sertifikat, centang pernyataan konfirmasi di bagian bawah halaman, lalu klik **Konfirmasi Sertifikat**.
+3. Setelah sertifikat berhasil diterbitkan, sistem melakukan pengecekan melalui **API Check Status** hingga status akun menjadi **Selesai**.
 
-Halaman Signature bertujuan untuk memudahkan pengguna dalam mengelola list tanda tangan digital untuk mempermudah proses transaksi. Pengguna juga dapat mengelola list tanda tangan tersebut dengan cara **View**, **Download**, dan **Delete** berdasarkan tanda tangan digital yang terdaftar.
+### 4.4 Organization
 
-Pengguna dapat menambahkan Signature pada button **Add Signature** dengan 3 jenis cara, yaitu gambar, ketik, dan unggah.
+1. Pada halaman Organization, pilih **Add Organization** untuk penyesuaian organisasi.
+2. Setelah penyesuaian selesai, klik tombol **Add Organization**.
 
-Ketika sudah selesai membuat atau mengunggah tanda tangan, pengguna dapat memilih button **Buat**.
+### 4.5 Account Activity
 
-### Provider
+Halaman yang menampilkan riwayat aktivitas pengguna pada aplikasi, seperti login, perubahan data, approval atau tanda tangan, transaksi, dan lain sebagainya.
 
-Proses Add Provider adalah proses utama setelah proses registrasi selesai untuk mempermudah proses transaksi.
+## 5. Change Password
 
-Pada halaman Provider, pengguna dapat memilih **Add Provider** untuk proses penyesuaian provider dan organisasi.
+Halaman untuk mengubah password:
 
-Ketika sudah melakukan penyesuaian terhadap registrasi DSA dan organisasi, pengguna diarahkan untuk menyesuaikan provider dengan memilih **Add Provider**.
+1. Input **password lama**, **password baru**, dan **konfirmasi password baru**.
+2. Setelah password berhasil diubah, pengguna **otomatis keluar (logout)** dari aplikasi DSA.
 
-Setelah berhasil menambahkan provider, pengguna akan mendapat informasi pada email yang berisikan undangan guna melanjutkan proses pembuatan aktivitas akun.
+## 6. Logout
 
-Ketika pengguna sudah memulai proses aktivasi akun, pengguna akan diarahkan pada halaman aktivasi dengan mencentang syarat dan ketentuan pada bagian bawah halaman. Kemudian pengguna memilih button **Selanjutnya** untuk melanjutkan proses selanjutnya.
+Pengguna dapat melakukan logout dari DSA melalui detail menu profile, yang dapat diakses dari semua menu.
 
-Ketika pengguna memilih button **Selanjutnya** dan diarahkan pada halaman Data Diri, pengguna akan diminta untuk mengisi data diri tersebut.
+## 7. Halaman Inbox
 
-Proses pengisian data diri dimulai dengan mengunggah KTP atau Kartu Tanda Penduduk. Pengguna memilih button **Upload Foto KTP**, kemudian pengguna menginputkan data diri sesuai dengan KTP yang sudah diunggah. Jika data diri sudah sesuai, pengguna memilih button **Selanjutnya**.
+Menu Inbox menampilkan pesan dokumen yang perlu ditindaklanjuti oleh pengguna. Inbox mencakup tab **To Do**, **On Progress**, dan **Completed**, serta status dokumen yang memerlukan approval, sign, atau sign & stamp secara digital.
 
-Ketika data diri sudah sesuai dan berhasil diunggah, pengguna akan diarahkan pada halaman Swafoto.
+### 7.1 Role pada Inbox
 
-Untuk memulai proses pengambilan swafoto, pengguna diarahkan pada button **Nyalakan Kamera**. Jika kamera sudah mengarah pada pengguna, pengguna dapat memilih button **Ambil Kamera**.
-
-Ketentuan swafoto:
-
-- Posisikan wajah Anda di tengah.
-- Pastikan Anda tidak memakai topi, masker, atau aksesoris yang menghalangi wajah.
-- Pastikan pencahayaan Anda cukup.
-
-Jika pengguna sudah berhasil mengambil swafoto, pengguna akan diminta untuk mengunggah swafoto dengan memilih button **Ambil Foto**.
-
-Ketika sudah berhasil mengunggah swafoto, step tersebut merupakan step terakhir. Pengguna dapat melihat Sertifikat Digital Akun dengan memilih button **Lihat Sertifikat**.
-
-Ketika pengguna sudah memilih button **Lihat Sertifikat**, pengguna akan melakukan konfirmasi sertifikat akun dengan memberikan konfirmasi mengenai data pada sertifikat dengan mencentang informasi yang terdapat pada bagian bawah halaman. Pengguna memilih button **Konfirmasi Sertifikat**.
-
-Ketika sertifikat sudah berhasil diterbitkan, pengguna akan diarahkan pada proses pengecekan API Check Status sampai status pada akun tersebut selesai.
-
-### Organization
-
-Pada halaman Organization, pengguna dapat memilih **Add Organization** untuk proses penyesuaian organisasi.
-
-Ketika sudah melakukan penyesuaian terhadap organisasi, pengguna diarahkan untuk memilih button **Add Organization**.
-
-### Account Activity
-
-Account Activity merupakan halaman yang menampilkan riwayat pengguna yang dilakukan pada aplikasi, seperti login, perubahan data, approval atau tanda tangan, transaksi, dan lain sebagainya.
-
-## Halaman Change Password
-
-Halaman Change Password merupakan halaman yang berfungsi untuk memudahkan pengguna guna mengubah passwordnya.
-
-Pengguna diarahkan untuk melakukan input password lama, input password baru, dan input konfirmasi password baru.
-
-Ketika pengguna berhasil mengubah password, pengguna akan otomatis keluar dari aplikasi Digital Signature Aggregator.
-
-## Halaman Logout
-
-Pengguna dapat melakukan logout dari Digital Signature Aggregator yang dapat diakses melalui semua menu pada detail menu profile.
-
-## Halaman Inbox
-
-Menu Inbox menampilkan pesan dokumen yang perlu ditindaklanjuti oleh pengguna yang bersangkutan. Menu Inbox mencakup **To Do**, **On Progress**, dan **Completed**, serta terdapat status terkait dokumen yang memerlukan approval, sign, atau sign & stamp secara digital.
-
-Pada halaman Inbox, ada 3 tugas yang berbeda di setiap kebutuhannya.
-
-| Role | Description |
+| Role | Deskripsi |
 |---|---|
-| Approver | Pengguna memiliki hak akses untuk menyetujui atau menolak dokumen yang diajukan. |
-| Signer | Pengguna memiliki hak akses untuk memberikan tanda tangan digital. |
-| Signer-Stamp | Pengguna memiliki hak akses untuk menandatangani dan memberikan stamp digital pada dokumen yang diajukan. |
+| **Approver** | Memiliki hak akses untuk menyetujui atau menolak dokumen yang diajukan. |
+| **Signer** | Memiliki hak akses untuk memberikan tanda tangan digital. |
+| **Signer-Stamp** | Memiliki hak akses untuk menandatangani dan memberikan stamp digital pada dokumen yang diajukan. |
 
-Halaman **To Do** menampilkan dokumen yang perlu ditindaklanjuti oleh Approver, Signer, atau Signer-Stamp sesuai dengan aksi yang dibutuhkan. Dokumen yang akan diproses adalah dokumen dengan status **Waiting**.
+### 7.2 Tab To Do — Proses Penandatanganan Dokumen
 
-Pada halaman Inbox, pengguna dapat menindaklanjuti dokumen dengan memberikan respon sesuai rolenya pada label action.
+Tab **To Do** menampilkan dokumen yang perlu ditindaklanjuti oleh Approver, Signer, atau Signer-Stamp sesuai aksi yang dibutuhkan. Dokumen yang diproses adalah dokumen berstatus **Waiting**. Pengguna menindaklanjuti dokumen sesuai role-nya melalui label *action*.
 
-Setelah pengguna menekan button **Sign Now**, halaman progress akan ditampilkan untuk mengisi kelengkapan keperluan dokumen. Alamat dan reason bersifat optional. Setelah itu, pengguna klik button **Next**.
+Alur penandatanganan:
 
-Setelah menekan button **Next**, pengguna akan diarahkan ke halaman progress selanjutnya, yaitu untuk membuat tanda tangan baru atau memilih tanda tangan yang sudah disimpan sebelumnya serta memberikan stamp pada dokumen.
+1. Klik **Sign Now** — halaman progress ditampilkan untuk mengisi kelengkapan dokumen (alamat dan *reason* bersifat opsional), lalu klik **Next**.
+2. Pada halaman progress berikutnya, buat **tanda tangan baru** atau pilih tanda tangan yang sudah tersimpan, serta berikan stamp pada dokumen.
+   - Untuk membuat tanda tangan baru: klik ikon **Tambah Tanda Tangan**, buat tanda tangan, lalu klik **Buat**.
+3. Terapkan tanda tangan dengan cara **drag & drop** ke posisi yang diinginkan pada dokumen, lalu klik **Selesaikan dan Tandatangani**.
+4. Pop up **Select Authentication Method** ditampilkan — pilih metode autentikasi (contoh: **session code**).
+5. Input **kode** yang diterima melalui email.
+6. Setelah berhasil, muncul informasi **"Dokumen berhasil ditandatangani"** dan pengguna diarahkan ke tab **Completed**.
 
-Jika pengguna ingin membuat tanda tangan baru, pengguna dapat klik icon **Tambah Tanda Tangan**.
+### 7.3 Tab On Progress
 
-Setelah klik icon **Tambah Tanda Tangan**, halaman untuk membuat tanda tangan akan ditampilkan. Jika sudah membuat tanda tangan, pengguna klik **Buat**.
+Menampilkan daftar dokumen yang masih dalam tahap pengerjaan atau proses penandatanganan. Pengguna dapat melihat dokumen yang diajukan melalui fitur **View File**.
 
-Setelah membuat tanda tangan baru, tanda tangan akan tampil. Untuk menerapkan pada dokumen, pengguna melakukan drag tanda tangan dan drop pada dokumen yang sudah disiapkan, lalu klik button **Selesaikan dan Tandatangani**.
+### 7.4 Tab Completed
 
-Setelah menekan button **Selesaikan dan Tandatangani**, pop up select authentication method akan ditampilkan. Contoh authentication method yang dipilih adalah session code.
+Berisi daftar dokumen yang sudah selesai diproses (approve, sign, sign & stamp). Pengguna dapat **melihat** dan **meng-export** dokumen untuk mengecek apakah dokumen sudah selesai diproses.
 
-Setelah pengguna memilih session code, pengguna akan mendapatkan informasi.
+## 8. Halaman List Dokumen
 
-Setelah itu, pengguna diarahkan untuk menginputkan code yang didapatkan pada pesan melalui email.
+Menampilkan total dokumen dengan status **Finished**, **In Progress**, **Rejected**, serta total dokumen masuk. Pengguna dapat menggunakan **filter tag status** untuk mengelompokkan dokumen.
 
-Setelah berhasil proses penandatanganan dokumen, pengguna akan mendapatkan informasi “Dokumen berhasil ditandatangani” dan akan redirect ke halaman Inbox tab Completed.
+### 8.1 Upload Dokumen
 
-Pada halaman detail **On Progress**, terdapat list dokumen yang masih tahap pengerjaan atau proses penandatanganan. Pengguna dapat melihat dokumen yang telah diajukan melalui fitur **View File**.
+Fitur upload dokumen memudahkan pengajuan persetujuan, tanda tangan, dan stamp:
 
-Halaman **Completed** berisi list dokumen yang sudah selesai proses transaksi, yaitu approve, sign, sign and stamp. Pada halaman ini, pengguna dapat melihat dokumen dan export dokumen untuk memudahkan pengguna mengecek dokumen apakah sudah selesai diproses atau belum.
+1. Upload dokumen **PDF** dengan ukuran maksimal **10 MB**.
+2. Pada halaman progress, isi **data penerima** dan **role**-nya, lalu klik **Next** dan **Send**.
+3. Sistem menampilkan pop up sukses upload dan mengarahkan kembali ke halaman List Dokumen.
 
-## Halaman List Dokumen
+### 8.2 Fitur Lainnya
 
-Menu List Dokumen merupakan halaman yang menampilkan total dokumen dengan status **finished**, **in progress**, **rejected**, dan total dokumen yang masuk. Untuk memudahkan pengguna mengelompokkan dokumen, pengguna dapat menggunakan filter tag status sesuai status dokumen yang dibutuhkan.
+- **View (ikon mata)** — admin dapat mengecek isi dokumen sebelum melakukan approval, signing, dan stamp.
+- **Export** — membantu admin membuat cadangan (backup) data.
 
-Pada menu List Dokumen, terdapat fitur upload dokumen untuk memudahkan pengguna dalam pengajuan persetujuan, tanda tangan, dan stamp dokumen dengan cara upload dokumen PDF dengan maksimal size 10 MB.
+## 9. Halaman History Saldo dan Top Up
 
-Setelah upload dokumen, pengguna akan diarahkan ke halaman progress untuk mengisi data penerima dan rolenya. Kemudian pengguna klik **Next** dan **Send**.
+Menu **Saldo** menampilkan data total saldo dan tabel history saldo, dilengkapi fitur **filter** untuk memudahkan pencarian.
 
-Setelah pengguna melakukan upload dokumen, sistem akan menampilkan pop up informasi sukses upload dokumen dan redirect ke halaman List Dokumen.
+### 9.1 Langkah-Langkah Top Up Saldo
 
-Pada menu List Document, admin dapat melakukan pengecekan isi dokumen sebelum melakukan approval, signing, dan stamp melalui fitur **View** atau icon eye.
+1. Pada menu Saldo, klik tombol **Top Up Balance**.
+2. Input **organisasi** dan **nominal top up** (minimal **Rp10.000**).
+3. Pilih metode pembayaran: **E-Wallet**, **QRIS**, **Virtual Account**, atau **Virtual Account Recurring**, lalu pilih **jenis** metode pembayarannya.
+4. **Cek Tagihan** — sistem menampilkan **Rincian Top Up**, lalu lanjutkan pembayaran.
+5. Klik **Bayar** — pengguna diarahkan ke halaman **Cara Pembayaran**, lalu klik **Lanjutkan Pembayaran** untuk mendapatkan kode.
+6. Input **kode pembayaran** pada halaman jenis metode pembayaran yang dipilih (kode dapat dilihat melalui **Show Test Account**).
+7. Input **PIN** metode pembayaran (dapat dilihat melalui **Show Test PIN**).
+8. Pada halaman detail **Payment Method**, klik **PAY** untuk menyelesaikan pembayaran.
 
-Pada menu List Document, terdapat fitur export yang bertujuan untuk membantu admin membuat cadangan atau backup data.
+### 9.2 Verifikasi Setelah Pembayaran
 
-## Halaman History Saldo
+1. Kembali ke halaman **Cara Pembayaran** di aplikasi DSA, lalu klik **Cek Status**.
+2. Jika berhasil, muncul pop up **"Saldo Berhasil diperbarui"**.
+3. Pastikan saldo bertambah dengan mengecek kembali halaman menu **Saldo**.
 
-Pada menu halaman Saldo, terdapat data total saldo dan list tabel history saldo. Untuk memudahkan pengguna mencari history saldo, pengguna dapat memfilter pada list tabel history saldo.
+## 10. Halaman History Transaksi
 
-Pada menu Saldo, pengguna dapat melakukan **Top Up Balance** dengan cara klik button **Top Up Balance** pada menu Saldo. Kemudian pengguna input organisasi dan menginputkan nominal top up minimal Rp10.000.
+Menampilkan total transaksi yang telah digunakan — seperti **signing**, **stamp**, **reactive**, **OTP**, **registrasi**, dan **session code** — berdasarkan **provider** dan **organization**.
 
-Pengguna memilih metode pembayaran, yaitu **E-Wallet**, **QRIS**, **Virtual Account**, dan **Virtual Account Recurring**. Setelah memilih metode pembayaran, pengguna memilih jenis metode pembayaran.
-
-Setelah **Cek Tagihan**, sistem akan menampilkan rincian top up dan pengguna dapat membayar top up.
-
-Setelah pengguna klik **Bayar**, pengguna akan diarahkan ke halaman Cara Pembayaran. Pengguna klik **Lanjutkan Pembayaran** untuk mendapatkan kode.
-
-Setelah melanjutkan pembayaran, pengguna akan diarahkan ke halaman jenis metode pembayaran yang sudah dipilih. Pengguna dapat input kode pembayaran. Untuk mendapatkan kode pembayaran, pengguna dapat melihat pada **Show Test Account**.
-
-Setelah input kode pembayaran, pengguna dapat menginputkan kode PIN jenis metode pembayaran. Untuk mendapatkan PIN metode pembayaran, pengguna dapat melihat pada **Show Test PIN**.
-
-Halaman detail **Payment Method** akan ditampilkan. Pengguna dapat melakukan pembayaran dengan cara klik **PAY**.
-
-Setelah pengguna berhasil melakukan transaksi dengan melakukan pembayaran, pengguna kembali ke halaman cara pembayaran di aplikasi Digital Signature Aggregator dan melakukan **Cek Status**. Jika berhasil, pengguna akan mendapatkan pop up “Saldo Berhasil diperbarui”.
-
-Setelah top up berhasil, pengguna dapat mengecek apakah saldo bertambah atau tidak pada halaman menu Saldo.
-
-## Halaman History Transaksi
-
-Menu History Transaksi merupakan halaman yang menampilkan total transaksi yang telah digunakan seperti signing, stamp, reactive, OTP, registrasi, dan session code berdasarkan provider dan organization.
-
-Pada menu History Transaksi terdapat fitur filter date, provider, saldo type, dan organization untuk memudahkan pengguna dalam mencari tanggal transaksi, nama provider, saldo type, dan organization yang dibutuhkan agar lebih efisien dan efektif.
+Tersedia fitur **filter** berdasarkan tanggal (*date*), *provider*, *saldo type*, dan *organization* untuk memudahkan pencarian transaksi secara lebih efisien dan efektif.

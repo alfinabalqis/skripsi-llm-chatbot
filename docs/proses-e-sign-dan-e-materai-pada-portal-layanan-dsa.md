@@ -1,165 +1,229 @@
-# Proses E-Sign dan E-Materai Pada Portal Layanan DSA
+# Proses E-Sign dan E-Materai pada Portal Layanan DSA
 
-> Sumber: `Proses E-Sign dan E-Materai Pada Portal Layanan DSA.pptx`  
-> Jumlah slide: 27
+> **Sumber:** `Proses E-Sign dan E-Materai Pada Portal Layanan DSA.pptx`  
+> **Jumlah slide sumber:** 27
 
-## Slide 1 — Proses E-Sign dan E-Materai pada Portal Layanan Digital Signature Aggregator (DSA)
+## Gambaran Umum
 
-- Digital Signature Aggregator
+Portal **Digital Signature Aggregator (DSA)** digunakan untuk mengelola proses persetujuan, tanda tangan elektronik, dan pembubuhan e-materai pada dokumen digital.
 
-- Proses E-Sign dan E-Materai pada Portal Layanan Digital Signature Aggregator (DSA)
+Fitur utama yang tersedia meliputi:
 
-## Slide 2 — Halaman Portal DSA
+- Pengelolaan tanda tangan elektronik.
+- Pemantauan dokumen melalui menu **Inbox**.
+- Pengunggahan dan pengajuan dokumen.
+- Persetujuan, penandatanganan, serta pembubuhan e-materai.
+- Pemantauan status dokumen.
+- Pratinjau dan ekspor dokumen.
 
-- Halaman Portal DSA
+## 1. Halaman Dashboard
 
-- Halaman Dashboard merupakan halaman utama, pada sidebar terdapat Settings, user dapat klik menu tersebut untuk membuat e-stamp dan e-sign.
+Halaman **Dashboard** merupakan halaman utama Portal DSA.
 
-## Slide 3 — Proses E-sign dan E-Materai pada Layanan DSA
+Pada sidebar tersedia menu **Settings** yang dapat digunakan untuk mengatur dan membuat:
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+- E-sign atau tanda tangan elektronik.
+- E-stamp atau e-materai.
 
-- Halaman Account Information merupakan halaman yang digunakan untuk mempermudah pengguna dalam melakukan proses tanda tangan elektronik pada dokumen digital. Pada halaman ini terdapat add, view download, dan delete signature.
+## 2. Pengelolaan Tanda Tangan
 
-## Slide 4 — Proses E-sign dan E-Materai pada Layanan DSA
+Pengelolaan tanda tangan dilakukan melalui halaman **Account Information**.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Pada halaman ini, pengguna dapat:
 
-- Dapat menambahkan Signature pada button Add Signature dengan 3 jenis cara yaitu Gambar, Ketik dan unggah sebagai berikut. Kemudian ketika sudah selesai membuat atau mengunggah tanda tangan, pengguna dapat memilih button Buat
+- Menambahkan tanda tangan.
+- Melihat tanda tangan yang tersimpan.
+- Mengunduh tanda tangan.
+- Menghapus tanda tangan.
 
-## Slide 5 — Proses E-sign dan E-Materai pada Layanan DSA
+### Menambahkan Tanda Tangan
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Klik tombol **Add Signature**, kemudian pilih salah satu metode berikut:
 
-- Pada menu Inbox menampilkan pesan dokumen yang perlu ditindaklanjuti oleh pengguna yang bersangkutan dan menu inbox ini mencakup To Do, On Progress dan Completed serta terdapat status terkait dokumen yang memerlukan approval, sign atau sign & stamp secara digital.
+1. **Gambar** — menggunakan gambar tanda tangan.
+2. **Ketik** — membuat tanda tangan dari teks.
+3. **Unggah** — mengunggah file tanda tangan.
 
-## Slide 6 — Proses E-sign dan E-Materai pada Layanan DSA
+Setelah tanda tangan selesai dibuat atau diunggah, klik tombol **Buat** untuk menyimpannya.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+## 3. Menu Inbox
 
-- Berikut adalah halaman To Do pada menu Inbox yang menampilkan dokumen yang perlu ditindaklanjuti oleh Approver, Signer, atau Signer-Stamp sesuai dengan aksi yang dibutuhkan. Dokumen yang akan diproses adalah dokumen dengan status Waiting.
+Menu **Inbox** menampilkan dokumen yang perlu ditindaklanjuti oleh pengguna.
 
-## Slide 7 — Proses E-sign dan E-Materai pada Layanan DSA
+Inbox terdiri atas tiga tab:
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+- **To Do** — dokumen yang menunggu tindakan.
+- **On Progress** — dokumen yang masih dalam proses.
+- **Completed** — dokumen yang seluruh prosesnya telah selesai.
 
-- Pada halaman Inbox, pengguna dapat menindaklanjuti dokumen dengan memberikan respon sesuai
-- Rolenya pada label action, seperti di bawah.
+Tindakan yang dapat diminta pada sebuah dokumen meliputi:
 
-## Slide 8 — Proses E-sign dan E-Materai pada Layanan DSA
+- **Approval**
+- **Sign**
+- **Sign & Stamp**
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+## 4. Memproses Dokumen pada Tab To Do
 
-- Kemudian, setelah pengguna menekan button Sign Now maka akan menampilkan halaman progres untuk mengisi kelengkapan keperluan dokumen ( alamat dan reason optional) dan klik button next, seperti berikut
+Tab **To Do** menampilkan dokumen yang harus ditindaklanjuti oleh pengguna sesuai perannya, seperti:
 
-## Slide 9 — Proses E-sign dan E-Materai pada Layanan DSA
+- **Approver**
+- **Signer**
+- **Signer-Stamp**
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Dokumen yang dapat diproses memiliki status **Waiting**.
 
-- Setelah menekan button next, pengguna akan diarahkan ke halaman progress selanjutnya yaitu untuk membuat tanda tangan baru atau memilih tanda tangan yang sudah disimpan sebelumnya serta memberikan stamp pada dokumen, seperti berikut.
+Pada kolom atau label **Action**, pengguna dapat memberikan respons sesuai peran dan tindakan yang diminta.
 
-## Slide 10 — Proses E-sign dan E-Materai pada Layanan DSA
+## 5. Proses Tanda Tangan dan E-Materai
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+### 5.1 Memulai Proses
 
-- Kemudian, jika pengguna ingin membuat tanda tangan baru bisa dengan cara klik icon Tambah Tanda Tangan, seperti berikut.
+Klik tombol **Sign Now** pada dokumen yang akan diproses.
 
-## Slide 11 — Proses E-sign dan E-Materai pada Layanan DSA
+Pengguna akan diarahkan ke halaman pengisian informasi tambahan, seperti:
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+- Alamat.
+- Alasan atau keterangan tambahan yang bersifat opsional.
 
-- Setelah klik icon tambah tanda tangan maka akan menampilkan halaman untuk membuat tanda tangan, jika sudah membuat tanda tangan maka klik Buat, seperti berikut.
+Setelah data diisi, klik **Next**.
 
-## Slide 12 — Proses E-sign dan E-Materai pada Layanan DSA
+### 5.2 Memilih atau Membuat Tanda Tangan
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Pada tahap berikutnya, pengguna dapat:
 
-- Setelah buat tanda tangan baru, maka tanda tangan akan tampil. Untuk menerapkan pada dokumen, drag tanda tangan dan drop pada dokumen yang sudah disiapkan serta klik button Selesaikan dan Tandatangani, seperti berikut.
+- Memilih tanda tangan yang sudah tersimpan.
+- Membuat tanda tangan baru.
+- Menambahkan stamp atau e-materai pada dokumen.
 
-## Slide 13 — Proses E-sign dan E-Materai pada Layanan DSA
+Untuk membuat tanda tangan baru:
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+1. Klik ikon **Tambah Tanda Tangan**.
+2. Buat atau unggah tanda tangan.
+3. Klik **Buat** untuk menyimpan.
 
-- Setelah menekan button selesaikan dan ditandatangani maka akan menampilkan pop up select authentication method , dan berikut adalah contoh authentication method yang dipilih adalah session code.
+### 5.3 Menempatkan Tanda Tangan pada Dokumen
 
-## Slide 14 — Proses E-sign dan E-Materai pada Layanan DSA
+Setelah tanda tangan tersedia:
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+1. Tarik tanda tangan dengan metode **drag and drop**.
+2. Letakkan tanda tangan pada posisi yang telah disiapkan di dokumen.
+3. Tambahkan stamp atau e-materai jika diperlukan.
+4. Klik **Selesaikan dan Tandatangani**.
 
-- Setelah pengguna memilih session code, pengguna akan mendapatkan informasi seperti berikut.
+### 5.4 Autentikasi
 
-## Slide 15 — Proses E-sign dan E-Materai pada Layanan DSA
+Setelah tombol **Selesaikan dan Tandatangani** ditekan, sistem akan menampilkan pilihan metode autentikasi.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Salah satu metode yang dapat digunakan adalah **Session Code**.
 
-- Setelah itu, pengguna diarahkan untuk menginputkan code yang didapatkan pada pesan melalui email, seperti berikut
+Alurnya adalah sebagai berikut:
 
-## Slide 16 — Proses E-sign dan E-Materai pada Layanan DSA
+1. Pilih metode **Session Code**.
+2. Sistem mengirimkan kode melalui email.
+3. Masukkan kode tersebut pada kolom autentikasi.
+4. Konfirmasikan proses penandatanganan.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+### 5.5 Penyelesaian Proses
 
-- Setelah berhasil proses penandatanganan dokumen, pengguna akan mendapatkan informasi “Dokumen berhasil ditandatangani” dan akan redirect ke halaman inbox tab completed, seperti berikut
+Jika proses berhasil, sistem menampilkan pesan:
 
-## Slide 17 — Proses E-sign dan E-Materai pada Layanan DSA
+> Dokumen berhasil ditandatangani.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Pengguna kemudian diarahkan ke menu **Inbox**, pada tab **Completed**.
 
-- Pada halaman detail On Progress merupakan list dokumen yang masih tahap pengerjaan atau proses penandatanganan, pengguna dapat melihat dokumen yang telah diajukan melalui fitur View File, seperti berikut.
+## 6. Pemantauan Status Dokumen
 
-## Slide 18 — Proses E-sign dan E-Materai pada Layanan DSA
+### On Progress
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Tab **On Progress** menampilkan dokumen yang masih dalam tahap:
 
-- Berikut adalah detail halaman Completed yang berisi list dokumen yang sudah selesai proses transaksi (approve, sign, sign and stamp). Pada halaman ini pengguna dapat melihat dokumen dan export dokumen untuk memudahkan pengguna mengecek dokumen apakah sudah selesai diproses atau belum, seperti gambar berikut
+- Pengerjaan.
+- Persetujuan.
+- Penandatanganan.
+- Pembubuhan e-materai.
 
-## Slide 19 — Proses E-sign dan E-Materai pada Layanan DSA
+Pengguna dapat melihat dokumen yang sedang diproses melalui fitur **View File**.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+### Completed
 
-- Pada menu List Dokumen merupakan halaman yang menampilkan total dokumen dengan status finished, in progress, rejected dan total dokumen yang masuk. Serta untuk memudahkan pengguna mengelompokkan dokumen, pengguna dapat menggunakan filter tag status sesuai status dokumen yang dibutuhkan, sebagai berikut.
+Tab **Completed** menampilkan dokumen yang seluruh transaksinya telah selesai, termasuk:
 
-## Slide 20 — Proses E-sign dan E-Materai pada Layanan DSA
+- Approval.
+- Sign.
+- Sign & Stamp.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Pada halaman ini, pengguna dapat:
 
-- Pada menu List Dokumen, terdapat fitur upload dokumen untuk memudahkan pengguna dalam pengajuan persetujuan, tanda tangan dan stamp dokumen dengan cara upload dokumen (*pdf) dengan maksimal size 10mb, seperti gambar berikut
+- Melihat dokumen.
+- Mengunduh atau mengekspor dokumen.
+- Memastikan bahwa dokumen telah selesai diproses.
 
-## Slide 21 — Proses E-sign dan E-Materai pada Layanan DSA
+## 7. Menu List Document
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Menu **List Document** menampilkan ringkasan seluruh dokumen berdasarkan status, seperti:
 
-- Setelah Upload Dokumen, maka akan diarahkan ke halaman progress untuk mengisi data penerima dan rolenya, kemudian klik next dan send seperti gambar berikut
+- **Finished**
+- **In Progress**
+- **Rejected**
+- Total dokumen yang masuk
 
-## Slide 22 — Proses E-sign dan E-Materai pada Layanan DSA
+Pengguna dapat menggunakan filter status untuk mengelompokkan dan menemukan dokumen yang dibutuhkan.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+## 8. Mengunggah dan Mengajukan Dokumen
 
-- Kemudian setelah pengguna melakukan upload dokumen, maka akan menampilkan pop up informasi sukses upload dokumen dan redirect ke halaman list dokumen sebagai berikut
+Pada menu **List Document**, tersedia fitur untuk mengunggah dokumen yang akan diajukan untuk:
 
-## Slide 23 — Proses E-sign dan E-Materai pada Layanan DSA
+- Persetujuan.
+- Tanda tangan.
+- Tanda tangan dan e-materai.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+### Ketentuan Dokumen
 
-- Pada menu List Document, admin dapat melakukan pengecekan isi dokumen sebelum melakukan approval, signing dan stamp melalui fitur View (icon eye), seperti berikut:
+- Format file: **PDF**
+- Ukuran maksimum: **10 MB**
 
-## Slide 24 — Proses E-sign dan E-Materai pada Layanan DSA
+### Langkah Pengajuan
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+1. Klik fitur **Upload Document**.
+2. Pilih dokumen PDF yang akan diunggah.
+3. Isi data penerima.
+4. Tentukan peran setiap penerima.
+5. Klik **Next**.
+6. Periksa kembali data pengajuan.
+7. Klik **Send**.
 
-- Berikut adalah tampilan dokumen dari salah satu dokumen yang dipilih, seperti berikut:
+Jika pengunggahan berhasil, sistem menampilkan notifikasi sukses dan mengarahkan pengguna kembali ke halaman **List Document**.
 
-## Slide 25 — Proses E-sign dan E-Materai pada Layanan DSA
+## 9. Melihat Isi Dokumen
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Admin dapat memeriksa isi dokumen sebelum melakukan:
 
-- Pada menu List Document, terdapat fitur export yang bertujuan untuk membantu admin membuat cadangan (backup) data, seperti berikut:
+- Approval.
+- Signing.
+- Stamp.
 
-## Slide 26 — Proses E-sign dan E-Materai pada Layanan DSA
+Untuk membuka dokumen, klik fitur **View** dengan ikon mata pada menu **List Document**.
 
-- Proses E-sign dan E-Materai pada Layanan DSA
+Sistem akan menampilkan pratinjau dokumen yang dipilih.
 
-- Berikut adalah tampilan dokumen dari salah satu pengguna yang berhasil di export, seperti berikut:
+## 10. Mengekspor Dokumen
 
-## Slide 27 — TERIMA KASIH
+Menu **List Document** menyediakan fitur **Export** untuk membantu admin:
 
-- TERIMA KASIH
+- Mengunduh dokumen yang telah diproses.
+- Membuat cadangan atau backup data.
+- Menyimpan hasil dokumen milik pengguna.
+
+Setelah proses ekspor selesai, dokumen hasil ekspor dapat dibuka dan diperiksa kembali.
+
+## Ringkasan Alur
+
+1. Pengguna membuat atau menyimpan tanda tangan melalui **Settings** atau **Account Information**.
+2. Dokumen diterima melalui menu **Inbox** atau diajukan melalui **List Document**.
+3. Pengguna membuka dokumen berstatus **Waiting** pada tab **To Do**.
+4. Pengguna melengkapi informasi dokumen.
+5. Pengguna memilih atau membuat tanda tangan.
+6. Tanda tangan dan e-materai ditempatkan pada dokumen.
+7. Pengguna melakukan autentikasi menggunakan metode yang tersedia.
+8. Dokumen yang berhasil diproses masuk ke tab **Completed**.
+9. Dokumen dapat dilihat, diunduh, atau diekspor sebagai cadangan.
