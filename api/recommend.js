@@ -89,6 +89,33 @@ function buildFeatureArray(jenisSigner, providerTerdaftar, metricsSnapshot) {
   return { featureArray, metricsUsed };
 }
 
+/**
+ * Fallback deterministik -- dipakai kalau LLM tidak tersedia (error/timeout)
+ * atau hasilnya menyimpang dari pola yang diharapkan. Menjamin reasoning
+ * SELALU konsisten formatnya walau LLM sedang tidak stabil.
+ */
+function buildTemplateReasoning(recommendedProvider, jenisSigner, metricsUsed) {
+  const m = metricsUsed[recommendedProvider];
+  const successRatePercent = (m.success_rate * 100).toFixed(0);
+  const slaMs = Math.round(m.avg_sla_ms);
+
+  const jenisSignerLabel = jenisSigner === 'Sign' ? 'sign' : 'sign + e-materai';
+
+  return `Success rate ${successRatePercent}% dan SLA tercepat (~${slaMs}ms) untuk ${jenisSignerLabel} dibanding provider lain yang terdaftar.`;
+}
+
+/**
+ * Validasi ringan: pastikan hasil LLM setidaknya menyebut angka success
+ * rate (%) dan SLA (ms) -- kalau tidak, dianggap menyimpang dan fallback
+ * ke template deterministik.
+ */
+function isReasoningValid(text) {
+  if (!text) return false;
+  const hasPercent = /%/.test(text);
+  const hasMs = /ms/i.test(text);
+  return hasPercent && hasMs;
+}
+
 async function generateReasoning(recommendedProvider, jenisSigner, metricsUsed) {
   const metricsSummary = Object.entries(metricsUsed)
     .filter(([, m]) => m.registered)
@@ -97,29 +124,45 @@ async function generateReasoning(recommendedProvider, jenisSigner, metricsUsed) 
     ))
     .join('; ');
 
-  const aiResponse = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [
-      {
-        role: 'system',
-        content: `Anda adalah asisten yang menjelaskan hasil rekomendasi vendor PSrE (Penyelenggara Sertifikasi Elektronik) pada platform Digital Signature Aggregator PT PLN Icon Plus.
+  try {
+    const aiResponse = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      temperature: 0, // minimalkan variasi antar pemanggilan
+      messages: [
+        {
+          role: 'system',
+          content: `Anda adalah asisten yang menjelaskan hasil rekomendasi vendor PSrE (Penyelenggara Sertifikasi Elektronik) pada platform Digital Signature Aggregator PT PLN Icon Plus.
 
-Sistem sudah menentukan provider yang direkomendasikan menggunakan algoritma C4.5 berdasarkan data performa historis (success rate dan SLA/execution time). Tugas Anda HANYA merangkai alasan singkat (1-2 kalimat) mengapa provider tersebut direkomendasikan, berdasarkan data metrik yang diberikan. JANGAN mengubah atau membantah provider yang sudah ditentukan sistem. Gunakan gaya bahasa singkat, jelas, dan meyakinkan, mirip contoh berikut:
+Sistem sudah menentukan provider yang direkomendasikan menggunakan algoritma C4.5 berdasarkan data performa historis (success rate dan SLA/execution time). Tugas Anda HANYA merangkai SATU kalimat alasan mengapa provider tersebut direkomendasikan, mengikuti pola berikut PERSIS (ganti angka sesuai data, JANGAN ubah struktur kalimatnya):
 
-"Success rate 97% dan SLA tercepat (~350ms) untuk sign + e-materai dibanding provider lain yang terdaftar."`,
-      },
-      {
-        role: 'user',
-        content: `Provider yang direkomendasikan: ${recommendedProvider}
+"Success rate {angka}% dan SLA tercepat (~{angka}ms) untuk {jenis layanan} dibanding provider lain yang terdaftar."
+
+JANGAN menambah kalimat lain, JANGAN mengubah provider yang sudah ditentukan sistem, JANGAN memakai gaya bahasa lain di luar pola tersebut.`,
+        },
+        {
+          role: 'user',
+          content: `Provider yang direkomendasikan: ${recommendedProvider}
 Jenis layanan: ${jenisSigner}
 Data metrik provider yang terdaftar: ${metricsSummary}
 
-Buatkan kalimat alasan rekomendasinya.`,
-      },
-    ],
-  });
+Buatkan kalimat alasan rekomendasinya mengikuti pola yang sudah ditentukan.`,
+        },
+      ],
+    });
 
-  return aiResponse.choices[0].message.content;
+    const result = aiResponse.choices[0].message.content.trim();
+
+    if (isReasoningValid(result)) {
+      return result;
+    }
+
+    console.warn('Reasoning dari LLM menyimpang dari pola, fallback ke template.');
+    return buildTemplateReasoning(recommendedProvider, jenisSigner, metricsUsed);
+
+  } catch (error) {
+    console.error('LLM gagal dipanggil, fallback ke template:', error.message);
+    return buildTemplateReasoning(recommendedProvider, jenisSigner, metricsUsed);
+  }
 }
 
 export default async function handler(req, res) {
