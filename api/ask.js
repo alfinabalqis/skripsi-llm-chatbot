@@ -7,21 +7,46 @@ import { loadMetricsSnapshot } from '../functions/metrics.js';
 import { buildFeatureArray, VALID_JENIS_SIGNER, PROVIDERS } from '../functions/features.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// [FIX] Timeout 30 detik agar request yang menggantung tidak memakan
+// durasi maksimal serverless function.
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 30000 });
 
 const SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'provider_metrics_snapshot.csv');
-
 const docsDir = path.join(__dirname, '..', 'docs');
+
+// [FIX] Origin dibatasi ke whitelist domain FE, bukan wildcard '*'.
+// Tanpa trailing slash, tanpa path, dan skema (http/https) harus sama
+// persis dengan yang muncul di address bar browser.
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:8080',
+  'http://dev-digital-sign.air.id',
+  'https://digital-sign.air.id', // produksi nanti
+];
+
+// [FIX] Batas panjang pertanyaan untuk mencegah pembengkakan token cost.
+const MAX_QUESTION_LENGTH = 1000;
+
+// [FIX] Batas maksimal ronde tool call agar loop tidak berjalan tanpa henti
+// dan client tidak pernah menerima answer: null.
+const MAX_TOOL_ROUNDS = 3;
 
 const DOC_META = [
   {
     file: 'FAQ_DSA_clean.md',
-    keywords: ['error', 'aktivasi', 'terdaftar', 'pendaftaran', 'provider', 'email', 'status', 'gagal', 'support', 'perbaikan', 'faq', 'masalah', 'troubble'],
+    keywords: ['error', 'aktivasi', 'terdaftar', 'pendaftaran', 'provider', 'email', 'status', 'gagal', 'support', 'perbaikan', 'faq', 'masalah', 'trouble', 'kendala'], // [FIX] typo 'troubble' + tambah 'kendala'
     always: true,
   },
   {
     file: 'Manual_Book_DSA_User_clean.md',
     keywords: ['cara', 'panduan', 'manual', 'tutorial', 'langkah', 'login', 'password', 'kata sandi', 'forgot', 'akun', 'organisasi', 'wna', 'passport'],
+    // Manual book mencakup materi dokumen turunan di bawah; lihat 'supersedes'.
+    supersedes: [
+      'registrasi-portal-layanan-dsa.md',
+      'registrasi-provider-pada-portal-layanan-dsa.md',
+      'proses-top-up-saldo-pada-portal-layanan-dsa.md',
+    ],
   },
   {
     file: 'registrasi-portal-layanan-dsa.md',
@@ -45,40 +70,88 @@ const DOC_META = [
   },
 ];
 
-// Pre-load all docs into memory
+// [FIX] Pre-load docs dengan error handling — jika ada file hilang setelah
+// re-cleaning, error saat deploy langsung menyebutkan file mana yang gagal.
 const docContents = {};
 for (const meta of DOC_META) {
   const label = meta.file.replace(/\.md$/, '').replace(/-/g, ' ').toUpperCase();
-  const content = fs.readFileSync(path.join(docsDir, meta.file), 'utf-8');
-  docContents[meta.file] = `--- ${label} ---\n${content}`;
+  try {
+    const content = fs.readFileSync(path.join(docsDir, meta.file), 'utf-8');
+    docContents[meta.file] = `--- ${label} ---\n${content}`;
+  } catch (err) {
+    throw new Error(`Gagal memuat dokumen "${meta.file}" dari ${docsDir}: ${err.message}`);
+  }
+}
+
+// [FIX] Cache metrics snapshot di module scope, sama seperti docContents,
+// alih-alih membaca dari disk setiap request.
+let metricsSnapshotCache = null;
+function getMetricsSnapshot() {
+  if (!metricsSnapshotCache) {
+    metricsSnapshotCache = loadMetricsSnapshot(SNAPSHOT_PATH);
+  }
+  return metricsSnapshotCache;
+}
+
+// [FIX] Rate limiting sederhana per IP (in-memory).
+// Catatan: di serverless, memory hanya bertahan selama instance warm dan
+// tidak dibagi antar-instance. Untuk proteksi penuh, ganti dengan store
+// terpusat seperti @upstash/ratelimit (Redis).
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 menit
+const RATE_LIMIT_MAX = 10; // maks 10 request per IP per menit
+const rateBuckets = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const bucket = rateBuckets.get(ip) || [];
+  const recent = bucket.filter(ts => now - ts < RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT_MAX) {
+    rateBuckets.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  rateBuckets.set(ip, recent);
+  // Bersihkan map agar tidak tumbuh tanpa batas
+  if (rateBuckets.size > 10_000) rateBuckets.clear();
+  return false;
 }
 
 /**
  * Filter dokumen berdasarkan pertanyaan user.
- * Hanya dokumen yang keyword-nya match yang diikutsertakan.
- * Dokumen dengan `always: true` selalu disertakan.
- * Minimal 1 dokumen selalu ada (fallback: FAQ).
+ * - Match keyword memakai word boundary agar 'sign' tidak cocok dengan 'design'. [FIX]
+ * - Dokumen 'always: true' selalu disertakan.
+ * - Dokumen turunan yang sudah tercakup manual book (supersedes) tidak
+ *   dikirim dobel, untuk menghemat token. [FIX]
+ * - Fallback: FAQ.
  */
 function filterDocsByQuestion(question) {
   const q = question.toLowerCase();
-  const selected = [];
 
+  const matchKeyword = (kw) => {
+    // Escape karakter regex pada keyword (mis. 'top-up')
+    const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp(`\\b${escaped}\\b`, 'i').test(q);
+  };
+
+  const matchedFiles = new Set();
   for (const meta of DOC_META) {
-    if (meta.always) {
-      selected.push(docContents[meta.file]);
-      continue;
+    if (meta.always || meta.keywords.some(matchKeyword)) {
+      matchedFiles.add(meta.file);
     }
-    const matched = meta.keywords.some(kw => q.includes(kw));
-    if (matched) selected.push(docContents[meta.file]);
   }
 
-  if (selected.length === 0) selected.push(docContents['FAQ_DSA_clean.md']);
+  // Buang dokumen turunan jika dokumen induknya juga terpilih
+  for (const meta of DOC_META) {
+    if (matchedFiles.has(meta.file) && meta.supersedes) {
+      for (const child of meta.supersedes) matchedFiles.delete(child);
+    }
+  }
 
-  return selected.join('\n\n');
+  if (matchedFiles.size === 0) matchedFiles.add('FAQ_DSA_clean.md');
+
+  return [...matchedFiles].map(f => docContents[f]).join('\n\n');
 }
 
-// Tool ini memaksa LLM memanggil model C4.5 yang sesungguhnya, bukan
-// menebak sendiri, setiap kali user bertanya soal rekomendasi vendor.
 const tools = [
   {
     type: 'function',
@@ -86,6 +159,9 @@ const tools = [
       name: 'get_vendor_recommendation',
       description:
         'Menjalankan model C4.5 untuk mendapatkan rekomendasi vendor PSrE yang sesungguhnya berdasarkan jenis layanan dan vendor yang terdaftar. WAJIB dipanggil setiap kali user menanyakan vendor mana yang direkomendasikan/sebaiknya dipilih. Jangan menjawab pertanyaan rekomendasi tanpa memanggil fungsi ini.',
+      // [FIX] strict: true mengaktifkan structured outputs sehingga OpenAI
+      // menjamin argumen sesuai schema (termasuk enum).
+      strict: true,
       parameters: {
         type: 'object',
         properties: {
@@ -96,28 +172,108 @@ const tools = [
           },
         },
         required: ['jenis_signer', 'provider_terdaftar'],
+        additionalProperties: false,
       },
     },
   },
 ];
 
+// [FIX] Validasi argumen di sisi server sebagai lapisan kedua —
+// jangan pernah percaya output LLM sepenuhnya.
+function validateRecommendationArgs(args) {
+  return (
+    args &&
+    typeof args.jenis_signer === 'string' &&
+    VALID_JENIS_SIGNER.includes(args.jenis_signer) &&
+    Array.isArray(args.provider_terdaftar) &&
+    args.provider_terdaftar.length > 0 &&
+    args.provider_terdaftar.every(p => PROVIDERS.includes(p))
+  );
+}
+
 function runRecommendation(jenisSigner, providerTerdaftar) {
-  const metricsSnapshot = loadMetricsSnapshot(SNAPSHOT_PATH);
+  const metricsSnapshot = getMetricsSnapshot();
   const { featureArray, metricsUsed } = buildFeatureArray(jenisSigner, providerTerdaftar, metricsSnapshot);
   const recommendedProvider = findDecision(featureArray);
   return { recommended_provider: recommendedProvider, metrics_used: metricsUsed };
 }
 
+// Mengeksekusi satu tool call dengan validasi; selalu mengembalikan
+// tool message agar percakapan tetap valid meski argumen bermasalah.
+function executeToolCall(toolCall) {
+  let args;
+  try {
+    args = JSON.parse(toolCall.function.arguments);
+  } catch {
+    return {
+      role: 'tool',
+      tool_call_id: toolCall.id,
+      content: JSON.stringify({ error: 'Argumen tidak valid (bukan JSON). Tanyakan kembali jenis layanan dan vendor terdaftar kepada user.' }),
+    };
+  }
+
+  if (!validateRecommendationArgs(args)) {
+    return {
+      role: 'tool',
+      tool_call_id: toolCall.id,
+      content: JSON.stringify({
+        error: 'Parameter di luar nilai yang diizinkan. Tanyakan kembali kepada user.',
+        jenis_signer_valid: VALID_JENIS_SIGNER,
+        provider_valid: PROVIDERS,
+      }),
+    };
+  }
+
+  try {
+    const result = runRecommendation(args.jenis_signer, args.provider_terdaftar);
+    return { role: 'tool', tool_call_id: toolCall.id, content: JSON.stringify(result) };
+  } catch (err) {
+    console.error('runRecommendation gagal:', err);
+    return {
+      role: 'tool',
+      tool_call_id: toolCall.id,
+      content: JSON.stringify({ error: 'Model rekomendasi sedang tidak dapat diakses. Sarankan user menghubungi tim support.' }),
+    };
+  }
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  // [FIX] Hanya origin yang ada di whitelist yang mendapat header CORS;
+  // origin asing tidak mendapat header sama sekali (diblokir browser).
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS'); // [FIX] GET dihapus
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  // [FIX] Hanya POST — pertanyaan user tidak lagi tercatat di access log
+  // via query string.
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed. Gunakan POST.' });
+  }
+
+  // [FIX] Rate limiting per IP sebelum menyentuh OpenAI.
+  const ip =
+    (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+    req.socket?.remoteAddress ||
+    'unknown';
+  if (isRateLimited(ip)) {
+    return res.status(429).json({ error: 'Terlalu banyak permintaan. Coba lagi sebentar lagi.' });
+  }
+
   try {
-    const question = req.method === 'GET' ? req.query.question : req.body.question;
-    if (!question) return res.status(400).json({ error: 'Pertanyaan tidak boleh kosong.' });
+    const question = req.body?.question;
+
+    // [FIX] Validasi tipe dan panjang input.
+    if (typeof question !== 'string' || question.trim().length === 0) {
+      return res.status(400).json({ error: 'Pertanyaan tidak boleh kosong.' });
+    }
+    if (question.length > MAX_QUESTION_LENGTH) {
+      return res.status(400).json({ error: `Pertanyaan maksimal ${MAX_QUESTION_LENGTH} karakter.` });
+    }
 
     const relevantDocs = filterDocsByQuestion(question);
 
@@ -136,7 +292,7 @@ Untuk pertanyaan rekomendasi/vendor PSrE, WAJIB memanggil fungsi get_vendor_reco
 Dokumentasi:
 ${relevantDocs}`,
       },
-      { role: 'user', content: question },
+      { role: 'user', content: question.trim() },
     ];
 
     let aiResponse = await openai.chat.completions.create({
@@ -148,37 +304,35 @@ ${relevantDocs}`,
 
     let responseMessage = aiResponse.choices[0].message;
 
-    // Jika LLM meminta memanggil fungsi, jalankan C4.5 sungguhan lalu
-    // kirim hasilnya kembali supaya jawaban akhir tidak hallucinate
-    if (responseMessage.tool_calls) {
+    // [FIX] Loop tool call dengan batas ronde, bukan hanya satu ronde,
+    // agar answer tidak pernah null jika model meminta tool berkali-kali.
+    let rounds = 0;
+    while (responseMessage.tool_calls && rounds < MAX_TOOL_ROUNDS) {
+      rounds += 1;
       messages.push(responseMessage);
 
       for (const toolCall of responseMessage.tool_calls) {
-        const args = JSON.parse(toolCall.function.arguments);
-        const result = runRecommendation(args.jenis_signer, args.provider_terdaftar);
-
-        messages.push({
-          role: 'tool',
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        });
+        messages.push(executeToolCall(toolCall));
       }
 
       aiResponse = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages,
+        tools,
         temperature: 0,
       });
       responseMessage = aiResponse.choices[0].message;
     }
 
-    return res.status(200).json({
-      question,
-      answer: responseMessage.content,
-    });
+    // [FIX] Fallback jika content tetap kosong setelah batas ronde tercapai.
+    const answer =
+      responseMessage.content ??
+      'Maaf, terjadi kendala saat memproses jawaban. Silakan coba lagi atau hubungi tim support.';
 
+    return res.status(200).json({ question, answer });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    // [FIX] Detail error hanya di log server, tidak dikirim ke client.
+    console.error('Chatbot handler error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
