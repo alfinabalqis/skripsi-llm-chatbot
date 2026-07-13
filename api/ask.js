@@ -66,7 +66,7 @@ const DOC_META = [
   },
   {
     file: 'ppt-tok-dsa.md',
-    keywords: ['dsa', 'pln', 'icon plus', 'latar belakang', 'overview', 'tentang', 'transfer of knowledge', 'pain point', 'solusi', 'digitalisasi'],
+    keywords: ['dsa', 'pln', 'icon plus', 'latar belakang', 'overview', 'tentang', 'transfer of knowledge', 'pain point', 'solusi', 'digitalisasi', 'harga', 'biaya', 'price', 'tarif', 'cost', 'fee', 'margin', 'registrasi', 'signing', 'sign', 'e-materai', 'otp', 're-registrasi'],
   },
 ];
 
