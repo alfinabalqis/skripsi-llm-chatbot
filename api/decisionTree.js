@@ -1,39 +1,75 @@
 /**
  * Decision tree hasil training C4.5 (chefboost), dikonversi otomatis
- * dari outputs/rules/rules.py
- * pakai convert_rules_to_js.py tiap kali retrain.
- * Urutan fitur: obj[0]: jenis_signer, obj[1]: registered_Peruri, obj[2]: success_rate_Peruri, obj[3]: avg_sla_ms_Peruri, obj[4]: registered_Privy, obj[5]: success_rate_Privy, obj[6]: avg_sla_ms_Privy, obj[7]: registered_Vinotek, obj[8]: success_rate_Vinotek, obj[9]: avg_sla_ms_Vinotek, obj[10]: registered_Xignature, obj[11]: success_rate_Xignature, obj[12]: avg_sla_ms_Xignature
+ * dari outputs/rules/rules.py oleh convert_rules_to_js.py pada 2026-07-14.
+ *
+ * findDecision(obj) mengembalikan objek:
+ *   provider : label vendor hasil klasifikasi C4.5
+ *   rulePath : daftar kondisi if-then yang dilalui dari akar ke daun
  */
+export const FEATURE_NAMES = [
+  "jenis_signer",
+  "registered_Peruri",
+  "success_rate_Peruri",
+  "avg_sla_ms_Peruri",
+  "registered_Privy",
+  "success_rate_Privy",
+  "avg_sla_ms_Privy",
+  "registered_Vinotek",
+  "success_rate_Vinotek",
+  "avg_sla_ms_Vinotek",
+  "registered_Xignature",
+  "success_rate_Xignature",
+  "avg_sla_ms_Xignature",
+];
+
 export function findDecision(obj) {
+  const rulePath = [];
+  const leaf = (provider) => ({ provider, rulePath });
+
   if (obj[8] <= 0.0) {
+    rulePath.push("success_rate_Vinotek <= 0.0");
     if (obj[5] > 0.0) {
+      rulePath.push("success_rate_Privy > 0.0");
       if (obj[11] <= 0.8462) {
-        return "Privy";
+        rulePath.push("success_rate_Xignature <= 0.8462");
+        return leaf("Privy");
       } else if (obj[11] > 0.8462) {
-        return "Xignature";
+        rulePath.push("success_rate_Xignature > 0.8462");
+        return leaf("Xignature");
       } else {
-        return "Privy";
+        return leaf("Privy");
       }
     } else if (obj[5] <= 0.0) {
+      rulePath.push("success_rate_Privy <= 0.0");
       if (obj[10] > 0) {
+        rulePath.push("registered_Xignature > 0");
         if (obj[2] <= 0.5914) {
-          return "Xignature";
+          rulePath.push("success_rate_Peruri <= 0.5914");
+          return leaf("Xignature");
         } else if (obj[2] > 0.5914) {
-          return "Peruri";
+          rulePath.push("success_rate_Peruri > 0.5914");
+          return leaf("Peruri");
         } else {
-          return "Xignature";
+          return leaf("Xignature");
         }
       } else if (obj[10] <= 0) {
-        return "Peruri";
+        rulePath.push("registered_Xignature <= 0");
+        return leaf("Peruri");
       } else {
-        return "Xignature";
+        return leaf("Xignature");
       }
     } else {
-      return "Privy";
+      return leaf("Privy");
     }
   } else if (obj[8] > 0.0) {
-    return "Vinotek";
+    rulePath.push("success_rate_Vinotek > 0.0");
+    return leaf("Vinotek");
   } else {
-    return "Privy";
+    return leaf("Privy");
   }
+}
+
+// Kompatibilitas mundur: pemanggil lama yang hanya butuh label string.
+export function findDecisionLabel(obj) {
+  return findDecision(obj).provider;
 }
