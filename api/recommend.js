@@ -20,7 +20,7 @@ const SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'provider_metrics_snaps
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'http://localhost:8080',
-  'http://dev-digital-sign.air.id',
+  'https://dev-digital-sign.air.id',
   'https://digital-sign.air.id',
 ];
 
