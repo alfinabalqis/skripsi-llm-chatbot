@@ -66,7 +66,7 @@ const DOC_META = [
   },
   {
     file: 'ppt-tok-dsa.md',
-    keywords: ['dsa', 'pln', 'icon plus', 'latar belakang', 'overview', 'tentang', 'transfer of knowledge', 'pain point', 'solusi', 'digitalisasi', 'harga', 'biaya', 'price', 'tarif', 'cost', 'fee', 'margin', 'registrasi', 'signing', 'sign', 'e-materai', 'otp', 're-registrasi'],
+    keywords: ['dsa', 'pln', 'icon plus', 'latar belakang', 'overview', 'tentang', 'transfer of knowledge', 'pain point', 'solusi', 'digitalisasi', 'harga', 'biaya', 'price', 'tarif', 'cost', 'fee', 'margin', 'registrasi', 'signing', 'sign', 'e-materai', 'otp', 're-registrasi', 'digital signature', 'aggregator', 'platform dsa', 'apa itu dsa', 'tentang dsa'],
   },
 ];
 
@@ -116,6 +116,21 @@ function isRateLimited(ip) {
   return false;
 }
 
+// [FIX] Query alias: singkatan/istilah yang merujuk ke topik sama
+// di-inject sebagai sinonim agar keyword matching lebih konsisten.
+const QUERY_ALIASES = [
+  { pattern: /\bdsa\b/i, expand: 'digital signature aggregator platform' },
+  { pattern: /\b(?:apa itu|tentang|kenapa|kenalan|pengertian|definisi|makna|arti)\b/i, expand: 'overview latar belakang' },
+];
+
+function expandQuery(question) {
+  let expanded = question.toLowerCase();
+  for (const alias of QUERY_ALIASES) {
+    if (alias.pattern.test(expanded)) expanded += ' ' + alias.expand;
+  }
+  return expanded;
+}
+
 /**
  * Filter dokumen berdasarkan pertanyaan user.
  * - Match keyword memakai word boundary agar 'sign' tidak cocok dengan 'design'. [FIX]
@@ -123,9 +138,11 @@ function isRateLimited(ip) {
  * - Dokumen turunan yang sudah tercakup manual book (supersedes) tidak
  *   dikirim dobel, untuk menghemat token. [FIX]
  * - Fallback: FAQ.
+ * - [FIX] Query di-expand dulu via QUERY_ALIASES agar singkatan
+ *   seperti 'dsa' otomatis match keyword terkait.
  */
 function filterDocsByQuestion(question) {
-  const q = question.toLowerCase();
+  const q = expandQuery(question);
 
   const matchKeyword = (kw) => {
     // Escape karakter regex pada keyword (mis. 'top-up')
@@ -286,6 +303,7 @@ ATURAN KETAT:
 1. Jawab HANYA berdasarkan dokumentasi yang diberikan di bawah. JANGAN mengarang atau menambah informasi yang tidak ada di dokumentasi.
 2. Jika informasi yang diminta tidak ditemukan dalam dokumentasi, katakan: "Maaf, saya tidak menemukan informasi tersebut dalam dokumentasi yang tersedia. Silakan hubungi tim support untuk bantuan lebih lanjut."
 3. Jangan pernah menebak atau mengarang jawaban. Lebih baik mengatakan tidak tahu daripada memberikan informasi yang tidak akurat.
+4. [FIX] Untuk pertanyaan sejenis "apa itu DSA", "apa itu Digital Signature Aggregator", "tentang DSA", "platform DSA" — berikan jawaban yang KONSISTEN: gunakan ringkasan definisi DSA dari dokumentasi, bukan salin-tempel panjang lebar. Jawaban harus singkat, jelas, dan mencakup: (a) apa DSA, (b) tujuan utama, (c) siapa penggunanya.
 
 Untuk pertanyaan rekomendasi/vendor PSrE, WAJIB memanggil fungsi get_vendor_recommendation. Jika jenis layanan atau vendor terdaftar belum disebutkan, tanyakan dulu.
 
